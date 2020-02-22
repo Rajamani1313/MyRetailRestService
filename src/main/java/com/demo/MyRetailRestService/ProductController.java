@@ -12,8 +12,8 @@ public class ProductController {
 
     @GetMapping("/products/{id}")
     public Product findById(@PathVariable String id){
-        Product product = new Product();
-        product.setName("test"+id);
+        System.out.println("Id"+id);
+        Product product = productService.fetchProductDetails(Long.parseLong(id));
         return product;
     }
 }
