@@ -8,6 +8,8 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
     public Product fetchProductDetails(Long id){
+        Product product = productRepository.findByProductId(id);
+//        System.out.println(product.toString());
         return productRepository.findByProductId(id);
     }
 }
