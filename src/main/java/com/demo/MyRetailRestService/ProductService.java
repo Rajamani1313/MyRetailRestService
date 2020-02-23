@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Service Class to execute functionality for Products
+ */
 @Service
 public class ProductService {
 
@@ -16,20 +19,29 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    /**
+     * Gets price from Database and Name from external API
+     * @param id
+     * @return Product
+     */
     public Product fetchProductDetails(Long id){
-        Price price = productRepository.findByProductId(id);
-//        System.out.println(product.toString());
+        ProductPrice productPrice = productRepository.findByProductId(id);
         Product product = new Product();
-        product.setName(fetchProductDescription(id));
+        product.setName(fetchProductName(id));
         CurrentPrice currentPrice = new CurrentPrice();
-        currentPrice.setCurrency_code(price.getCurrency());
-        currentPrice.setValue(price.getPrice());
+        currentPrice.setCurrency_code(productPrice.getCurrency());
+        currentPrice.setValue(productPrice.getPrice());
         product.setCurrent_price(currentPrice);
         product.setId(id);
         return product;
     }
-    private String fetchProductDescription(Long id){
 
+    /**
+     * Fetches Product Name from Redsky External API by passing Product Id
+     * @param id
+     * @return Product Name
+     */
+    private String fetchProductName(Long id){
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = null;
         System.out.println("Id:"+id);
