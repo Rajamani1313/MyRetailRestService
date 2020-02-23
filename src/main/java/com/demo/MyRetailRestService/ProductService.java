@@ -44,10 +44,22 @@ public class ProductService {
     private String fetchProductName(Long id){
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = null;
-        System.out.println("Id:"+id);
-        System.out.println("URL:"+productDescriptionUri);
         responseEntity = restTemplate.getForEntity(productDescriptionUri, String.class, id);
         String description = JsonPath.parse(responseEntity.getBody()).read("$.product.item.product_description.title").toString();
         return description;
+    }
+
+    /**
+     * Inserts a Price record for the product
+     * @param id
+     * @param product
+     */
+    public void saveProductDetails(Long id, Product product) {
+        ProductPrice productPrice = new ProductPrice();
+        productPrice.setProductId(id);
+        productPrice.setPrice(product.getCurrent_price().getValue());
+        productPrice.setCurrency(product.getCurrent_price().getCurrency_code());
+        productRepository.save(productPrice);
+
     }
 }
