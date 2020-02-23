@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class CurrentPrice {
-    private String value;
+    private Double value;
     private String currency_code;
 }

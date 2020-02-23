@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends MongoRepository<Product,Long> {
-    Product findByProductId(Long id);
+    Price findByProductId(Long id);
 }
