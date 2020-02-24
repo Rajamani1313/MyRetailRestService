@@ -11,7 +11,7 @@
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
-                <SizeBasedTriggeringPolicy size="10 KB" />
+                <SizeBasedTriggeringPolicy size="1000 KB" />
 
             </Policies>
         </RollingFile>
