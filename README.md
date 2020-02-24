@@ -12,13 +12,17 @@ MyRetailRestService is a Restful web service for Products API which gets product
 We can run the application by downloading into local and run the below command. By default the application runs on port 8080. We can change by changing the port in application.properties file.
 
 ```
-mvn spring-boot:run
+./mvnw clean package
+./mvnw spring-boot:run
 ```
 
 ### Endpoints
-* http://localhost:8080/products/{id} -> Get : To get the product details based on product Id
-* http://localhost:8080/products/{id} -> Put: To update price of the product
+* http://localhost:8080/v1/products/{id} -> Get : To get the product details based on product Id
+* http://localhost:8080/v1/products/{id} -> Put: To update price of the product
 
+####
+* curl http://localhost:8080/v1/products/13860427
+* curl -X PUT -H "Content-Type: application/json" -d '{"id":13860499,"name":"Conan the Barbarian (dvd_video)","current_price":{"value":0.01,"currency_code":"USD"}}' http://localhost:8080/v1/products/13860499
 
 ### Sample Products:
 * 13860427,13860428,13860429 
