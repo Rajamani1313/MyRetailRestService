@@ -1,5 +1,6 @@
 package com.demo.MyRetailRestService;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +20,7 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/v1/products")
+@Slf4j
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -39,6 +41,7 @@ public class ProductController {
         try {
             productId = Long.parseLong(id);
         } catch (Exception e) {
+            log.info(ProductMessage.ERR102 + " - " + id);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ProductMessage.ERR102);
         }
         /**
@@ -48,8 +51,10 @@ public class ProductController {
         try {
             product = productService.fetchProductDetails(productId);
         } catch (Exception e) {
+            log.info(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+        log.info("Get Function Success: " + product.toString());
         return ResponseEntity.status(HttpStatus.OK).body(product);
     }
 
@@ -71,14 +76,17 @@ public class ProductController {
         try {
             productId = Long.parseLong(id);
         } catch (Exception e) {
+            log.info(ProductMessage.ERR102 + " - " + id);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ProductMessage.ERR102);
         }
 
         /**
          * Validate Product Id to be matching the request URI
          */
-        if (!(product.getId().equals(productId)))
+        if (!(product.getId().equals(productId))) {
+            log.info(ProductMessage.ERR103 + " - " + id + " - " + product.getId());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ProductMessage.ERR103);
+        }
 
         /**
          * Validate Request Body Json for Constraints
@@ -89,6 +97,7 @@ public class ProductController {
             List message = new ArrayList();
             for (ConstraintViolation error : errorList)
                 message.add(error.getPropertyPath().toString() + ":" + error.getMessage());
+            log.info(ProductMessage.ERR105 + Arrays.toString(message.toArray()));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ProductMessage.ERR105 + "\n" + Arrays.toString(message.toArray()));
         }
 
@@ -98,8 +107,10 @@ public class ProductController {
         try {
             productService.saveProductDetails(product);
         } catch (Exception e) {
+            log.info(e.getMessage() + id);
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage() + id);
         }
+        log.info("Insert Function Success: " + ProductMessage.MSG100 + id);
         return ResponseEntity.status(HttpStatus.CREATED).body(ProductMessage.MSG100 + id);
     }
 }
