@@ -3,6 +3,9 @@ package com.demo.MyRetailRestService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Main Class to run the Application
+ */
 @SpringBootApplication
 public class MyRetailRestServiceApplication {
 
