@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDate;
@@ -20,36 +21,33 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(ProductPriceNotFoundException.class)
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler({ProductPriceNotFoundException.class,ProductDescriptionNotFoundException.class})
     public ResponseEntity<Object> handleProductPriceNotFoundException(
-            ProductPriceNotFoundException ex, WebRequest request) {
+            Exception ex, WebRequest request) {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Product Price not found");
+        body.put("message", ex.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(ProductDescriptionNotFoundException.class)
-    public ResponseEntity<Object> handleProductDescriptionNotFoundException(
-            ProductDescriptionNotFoundException ex, WebRequest request) {
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Product Description not found");
-
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-    }
-    @ExceptionHandler(ProductAlreadyExistException.class)
+    @ExceptionHandler({ProductAlreadyExistException.class,ProductIdNotMatchingException.class})
     public ResponseEntity<Object> handleProductAlreadyExistException(
-            ProductAlreadyExistException ex, WebRequest request) {
+            Exception ex, WebRequest request) {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Product Already Exist");
+        body.put("message", ex.getMessage());
 
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
     @Override
@@ -59,8 +57,6 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDate.now());
-        body.put("status", status.value());
-
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()

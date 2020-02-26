@@ -38,7 +38,6 @@ public class ProductControllerTest {
     long getId = 13860427;
     long smallId = 1386042;
     long largeId = 1386042999;
-    long zero = 0;
     String stringId = "abcdef";
 
     Product product = new Product();
@@ -52,7 +51,7 @@ public class ProductControllerTest {
      * @param product
      * @return
      */
-    public Product setup(Product product) {
+    private Product setup(Product product) {
         product.setName("test");
         currentPrice.setValue(1.99);
         currentPrice.setCurrencyCode("USD");
@@ -71,14 +70,6 @@ public class ProductControllerTest {
     @Test
     public void test_get_product_details_invalid_id_should_return_not_found() throws Exception {
         mockMvc.perform(get("/v1/products/{id}", tempId))
-                .andDo(print())
-                .andExpect(status().isNotFound())
-                .andExpect(content().string(containsString("Product Price not available")));
-    }
-
-    @Test
-    public void test_get_product_details_zero_should_return_not_found() throws Exception {
-        mockMvc.perform(get("/v1/products/{id}", zero))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(containsString("Product Price not available")));
@@ -178,22 +169,6 @@ public class ProductControllerTest {
 //        System.out.println(builder.toString());
         this.mockMvc.perform(builder).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("Product Id should be greater than 10000000")));
-    }
-
-    @Test
-    public void add_product_zero_id_should_return_bad_request() throws Exception {
-        product.setId(zero);
-        product = setup(product);
-        json = obj.writeValueAsString(product);
-        builder = MockMvcRequestBuilders.put("/v1/products/" + zero)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8")
-                .content(json);
-//        System.out.println(builder.toString());
-        this.mockMvc.perform(builder).andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Product Id should be greater than 10000000")));
-
     }
 
     @Test

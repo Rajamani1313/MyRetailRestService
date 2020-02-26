@@ -1,5 +1,8 @@
 package com.demo.myretail.controller;
 
+import com.demo.myretail.Exception.ProductIdNotMatchingException;
+import com.demo.myretail.Exception.ProductIdValidationException;
+import com.demo.myretail.Exception.ProductPriceNotFoundException;
 import com.demo.myretail.model.Product;
 import com.demo.myretail.model.ProductMessage;
 import com.demo.myretail.service.ProductService;
@@ -29,28 +32,21 @@ public class ProductController {
      * @return Product
      */
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getProductDetails(@PathVariable String id) {
+    public ResponseEntity getProductDetails( @PathVariable String id) {
 
         /**
          * Validate Product Id to be numeric
          */
-        Long productId = null;
-        try {
-            productId = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            log.info(ProductMessage.ERR102 + " - " + id);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ProductMessage.ERR102);
+        String regEx = "^[0-9]{8}$";
+        if (!id.matches(regEx)) {
+            log.info(ProductMessage.ERR102 + id);
+            throw new ProductIdValidationException(id);
         }
         /**
          * Fetch Product from persistent storage
          */
         Product product = null;
-        try {
-            product = productService.fetchProductDetails(productId);
-        } catch (Exception e) {
-            log.info(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        product = productService.fetchProductDetails(Long.parseLong(id));
         log.info("Get Function Success: " + product.toString());
         return ResponseEntity.status(HttpStatus.OK).body(product);
     }
@@ -68,31 +64,24 @@ public class ProductController {
         /**
          * Validate Product Id to be numeric
          */
-        Long productId = null;
-        try {
-            productId = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            log.info(ProductMessage.ERR102 + " - " + id);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ProductMessage.ERR102);
+        String regEx = "^[0-9]{8}$";
+        if (!id.matches(regEx)) {
+            log.info(ProductMessage.ERR102 + id);
+            throw new ProductIdValidationException(id);
         }
 
         /**
          * Validate Product Id to be matching the request URI
          */
-        if (!(product.getId().equals(productId))) {
-            log.info(ProductMessage.ERR103 + " - " + id + " - " + product.getId());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ProductMessage.ERR103);
+        if (!(product.getId().equals(Long.parseLong(id)))) {
+            log.info(ProductMessage.ERR103 + id + " vs " + product.getId());
+            throw new ProductIdNotMatchingException(id + " vs " + product.getId());
         }
 
         /**
          * Insert Product Price details to persistent storage
          */
-        try {
-            productService.saveProductDetails(product);
-        } catch (Exception e) {
-            log.info(e.getMessage() + id);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+        productService.saveProductDetails(product);
         log.info("Insert Function Success: " + ProductMessage.MSG100 + id);
         return ResponseEntity.status(HttpStatus.CREATED).body(ProductMessage.MSG100 + id);
     }

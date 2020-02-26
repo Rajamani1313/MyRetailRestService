@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 /**
  * Model class for Product
@@ -20,7 +18,7 @@ public class Product {
     private Long id;
 
     @Valid
-    @NotNull (message = "Product name Should not be Null")
+    @NotBlank(message = "Product name Should not be Null")
     private String name;
 
     @Valid

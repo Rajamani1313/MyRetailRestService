@@ -19,14 +19,9 @@ import org.springframework.web.client.RestTemplate;
  * Service Class to execute functionality for Products
  */
 @Service
-@Slf4j
-public class ProductService {
+public interface ProductService {
 
-    @Value("${external.api.uri}")
-    private String productDescriptionUri;
 
-    @Autowired
-    ProductRepository productRepository;
 
     /**
      * Gets price from Database and Name from external API
@@ -34,25 +29,7 @@ public class ProductService {
      * @param id
      * @return Product
      */
-    public Product fetchProductDetails(Long id) throws ProductAlreadyExistException {
-        log.debug("Inside Fetch Product Details");
-        log.debug("Product Id : " + id);
-        ProductPrice productPrice = productRepository.findByProductId(id);
-        if (productPrice == null) {
-            log.info("Product not found in DB");
-            throw new ProductPriceNotFoundException(String.valueOf(id));
-        }
-        log.debug("Price Details fetched from DB successfully" + productPrice.toString());
-        Product product = new Product();
-        product.setName(fetchProductName(id));
-        CurrentPrice currentPrice = new CurrentPrice();
-        currentPrice.setCurrencyCode(productPrice.getCurrency());
-        currentPrice.setValue(productPrice.getPrice());
-        product.setCurrentPrice(currentPrice);
-        product.setId(id);
-        log.debug("Product Retrieved successfully" + product.toString());
-        return product;
-    }
+     Product fetchProductDetails(Long id) throws ProductAlreadyExistException ;
 
     /**
      * Fetches Product Name from Redsky External API by passing Product Id
@@ -60,42 +37,13 @@ public class ProductService {
      * @param id
      * @return Product Name
      */
-    public String fetchProductName(Long id) throws ProductAlreadyExistException {
-        log.debug("Inside Fetch Product Name");
-        log.debug("Product Id : " + id);
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> responseEntity = null;
-        String description = null;
-        try {
-            log.debug(productDescriptionUri);
-            responseEntity = restTemplate.getForEntity(productDescriptionUri, String.class, id);
-            log.debug("Response Entity: " + responseEntity);
-            description = JsonPath.parse(responseEntity.getBody()).read("$.product.item.product_description.title").toString();
-            log.debug("Description fetched succesfully:" + description);
-        } catch (Exception e) {
-            log.error("Exception:" + e.getMessage());
-            throw new ProductDescriptionNotFoundException(String.valueOf(id));
-        }
-        return description;
-    }
+     String fetchProductName(Long id) throws ProductAlreadyExistException ;
 
     /**
      * Inserts a Price record for the product
      *
      * @param product
      */
-    public void saveProductDetails(Product product) throws ProductAlreadyExistException {
-        log.debug("Inside Save Product Details");
-        log.debug("Product: " + product.toString());
-        ProductPrice productPrice = new ProductPrice();
-        productPrice.setProductId(product.getId());
-        productPrice.setPrice(product.getCurrentPrice().getValue());
-        productPrice.setCurrency(product.getCurrentPrice().getCurrencyCode());
-        try {
-            productRepository.save(productPrice);
-        } catch (Exception e) {
-            log.error("Exception: " + e.getMessage());
-            throw new ProductAlreadyExistException(String.valueOf(product.getId()));
-        }
-    }
+     void saveProductDetails(Product product) throws ProductAlreadyExistException ;
+
 }
