@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn">
     <Properties>
-        <Property name="basePath">/Users/rajamanimurugan/Downloads/MyRetailRestService/target</Property>
+        <Property name="basePath">/Users/rmurugan/repo/MyRetailRestService/target</Property>
     </Properties>
 
     <Appenders>
@@ -21,7 +21,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="com.demo.MyRetailRestService" level="debug" additivity="true">
+        <Logger name="com.demo.myretail" level="debug" additivity="true">
             <appender-ref ref="fileLogger" level="debug" />
         </Logger>
         <Root level="info" additivity="false">

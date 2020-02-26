@@ -1,5 +1,6 @@
-package com.demo.MyRetailRestService;
+package com.demo.myretail;
 
+import com.demo.myretail.controller.HomeController;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;

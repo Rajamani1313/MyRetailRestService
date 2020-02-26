@@ -1,5 +1,9 @@
-package com.demo.MyRetailRestService;
+package com.demo.myretail.controller;
 
+import com.demo.myretail.Exception.ProductException;
+import com.demo.myretail.model.Product;
+import com.demo.myretail.model.ProductMessage;
+import com.demo.myretail.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.ArrayList;
@@ -50,7 +55,7 @@ public class ProductController {
         Product product = null;
         try {
             product = productService.fetchProductDetails(productId);
-        } catch (Exception e) {
+        } catch (ProductException e) {
             log.info(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -66,8 +71,7 @@ public class ProductController {
      * @return Response Object
      */
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity UpdatePriceDetails(@PathVariable String id, @RequestBody Product product) {
-
+    public ResponseEntity updatePriceDetails(@PathVariable String id, @RequestBody Product product) {
 
         /**
          * Validate Product Id to be numeric
@@ -106,7 +110,7 @@ public class ProductController {
          */
         try {
             productService.saveProductDetails(product);
-        } catch (Exception e) {
+        } catch (ProductException e) {
             log.info(e.getMessage() + id);
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage() + id);
         }

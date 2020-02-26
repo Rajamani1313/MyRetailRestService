@@ -1,5 +1,6 @@
-package com.demo.MyRetailRestService;
+package com.demo.myretail.repository;
 
+import com.demo.myretail.dto.ProductPrice;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends MongoRepository<ProductPrice,Long> {
     ProductPrice findByProductId(Long id);
+    void deleteByProductId(Long id);
 }

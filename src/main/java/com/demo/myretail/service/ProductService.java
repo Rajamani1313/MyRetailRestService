@@ -1,5 +1,11 @@
-package com.demo.MyRetailRestService;
+package com.demo.myretail.service;
 
+import com.demo.myretail.Exception.ProductException;
+import com.demo.myretail.dto.ProductPrice;
+import com.demo.myretail.model.CurrentPrice;
+import com.demo.myretail.model.Product;
+import com.demo.myretail.model.ProductMessage;
+import com.demo.myretail.repository.ProductRepository;
 import com.jayway.jsonpath.JsonPath;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,21 +33,21 @@ public class ProductService {
      * @param id
      * @return Product
      */
-    public Product fetchProductDetails(Long id) throws Exception {
+    public Product fetchProductDetails(Long id) throws ProductException {
         log.debug("Inside Fetch Product Details");
         log.debug("Product Id : " + id);
         ProductPrice productPrice = productRepository.findByProductId(id);
         if (productPrice == null) {
             log.info("Product not found in DB");
-            throw new Exception(ProductMessage.ERR100);
+            throw new ProductException(ProductMessage.ERR100);
         }
         log.debug("Price Details fetched from DB successfully" + productPrice.toString());
         Product product = new Product();
         product.setName(fetchProductName(id));
         CurrentPrice currentPrice = new CurrentPrice();
-        currentPrice.setCurrency_code(productPrice.getCurrency());
+        currentPrice.setCurrencyCode(productPrice.getCurrency());
         currentPrice.setValue(productPrice.getPrice());
-        product.setCurrent_price(currentPrice);
+        product.setCurrentPrice(currentPrice);
         product.setId(id);
         log.debug("Product Retrieved successfully" + product.toString());
         return product;
@@ -53,7 +59,7 @@ public class ProductService {
      * @param id
      * @return Product Name
      */
-    private String fetchProductName(Long id) throws Exception {
+    private String fetchProductName(Long id) throws ProductException {
         log.debug("Inside Fetch Product Name");
         log.debug("Product Id : " + id);
         RestTemplate restTemplate = new RestTemplate();
@@ -67,7 +73,7 @@ public class ProductService {
             log.debug("Description fetched succesfully:" + description);
         } catch (Exception e) {
             log.error("Exception:" + e.getMessage());
-            throw new Exception(ProductMessage.ERR101);
+            throw new ProductException(ProductMessage.ERR101);
         }
         return description;
     }
@@ -77,18 +83,18 @@ public class ProductService {
      *
      * @param product
      */
-    public void saveProductDetails(Product product) throws Exception {
+    public void saveProductDetails(Product product) throws ProductException {
         log.debug("Inside Save Product Details");
         log.debug("Product: " + product.toString());
         ProductPrice productPrice = new ProductPrice();
         productPrice.setProductId(product.getId());
-        productPrice.setPrice(product.getCurrent_price().getValue());
-        productPrice.setCurrency(product.getCurrent_price().getCurrency_code());
+        productPrice.setPrice(product.getCurrentPrice().getValue());
+        productPrice.setCurrency(product.getCurrentPrice().getCurrencyCode());
         try {
             productRepository.save(productPrice);
         } catch (Exception e) {
             log.error("Exception: " + e.getMessage());
-            throw new Exception(ProductMessage.ERR104);
+            throw new ProductException(ProductMessage.ERR104);
         }
     }
 }

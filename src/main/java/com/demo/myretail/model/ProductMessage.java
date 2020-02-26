@@ -1,4 +1,4 @@
-package com.demo.MyRetailRestService;
+package com.demo.myretail.model;
 
 public class ProductMessage {
     public static final String ERR100 = "ERR-101 - Product Price not available";

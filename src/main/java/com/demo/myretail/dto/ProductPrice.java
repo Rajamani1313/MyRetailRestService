@@ -1,4 +1,4 @@
-package com.demo.MyRetailRestService;
+package com.demo.myretail.dto;
 
 import lombok.Data;
 
