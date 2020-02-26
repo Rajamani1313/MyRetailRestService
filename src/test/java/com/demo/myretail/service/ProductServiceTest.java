@@ -62,6 +62,6 @@ public class ProductServiceTest {
     @Test
     public void test_valid_product_id_should_return_description_success() {
         String result = productService.fetchProductName(productId);
-        MatcherAssert.assertThat(descriptionx, Matchers.is(result));
+        MatcherAssert.assertThat(description, Matchers.is(result));
     }
 }

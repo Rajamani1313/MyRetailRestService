@@ -10,11 +10,11 @@ import javax.validation.constraints.Positive;
 @Data
 public class CurrentPrice {
 
-    @NotNull (message = "Should not be Null")
+    @NotNull (message = "PricesShould not be Null")
     @Positive (message = "Price should be positive")
     private Double value;
 
-    @Pattern(regexp = "USD",message="Only USD is acceptable")
+    @Pattern(regexp = "USD",message="Only USD is acceptable in currency code")
     @JsonProperty("currency_code")
     private String currencyCode;
 }

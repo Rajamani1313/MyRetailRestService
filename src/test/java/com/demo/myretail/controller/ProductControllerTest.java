@@ -140,6 +140,7 @@ public class ProductControllerTest {
     @Test
     public void add_product_mismatch_id_should_return_bad_request() throws Exception {
         product.setId(getId);
+        product = setup(product);
         json = obj.writeValueAsString(product);
         builder = MockMvcRequestBuilders.put("/v1/products/" + tempId)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -152,7 +153,8 @@ public class ProductControllerTest {
 
     @Test
     public void add_product_string_id_should_return_bad_request() throws Exception {
-        product.setId(zero);
+        product.setId(tempId);
+        product = setup(product);
         json = obj.writeValueAsString(product);
         builder = MockMvcRequestBuilders.put("/v1/products/" + stringId)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -166,6 +168,7 @@ public class ProductControllerTest {
     @Test
     public void add_product_small_id_should_return_bad_request() throws Exception {
         product.setId(smallId);
+        product = setup(product);
         json = obj.writeValueAsString(product);
         builder = MockMvcRequestBuilders.put("/v1/products/" + smallId)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -174,12 +177,13 @@ public class ProductControllerTest {
                 .content(json);
 //        System.out.println(builder.toString());
         this.mockMvc.perform(builder).andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Value should be greater than 10000000")));
+                .andExpect(content().string(containsString("Product Id should be greater than 10000000")));
     }
 
     @Test
     public void add_product_zero_id_should_return_bad_request() throws Exception {
         product.setId(zero);
+        product = setup(product);
         json = obj.writeValueAsString(product);
         builder = MockMvcRequestBuilders.put("/v1/products/" + zero)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -188,13 +192,14 @@ public class ProductControllerTest {
                 .content(json);
 //        System.out.println(builder.toString());
         this.mockMvc.perform(builder).andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Value should be greater than 10000000")));
+                .andExpect(content().string(containsString("Product Id should be greater than 10000000")));
 
     }
 
     @Test
     public void add_product_large_id_should_return_bad_request() throws Exception {
         product.setId(largeId);
+        product = setup(product);
         json = obj.writeValueAsString(product);
         builder = MockMvcRequestBuilders.put("/v1/products/" + largeId)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -202,6 +207,6 @@ public class ProductControllerTest {
                 .characterEncoding("UTF-8")
                 .content(json);
         this.mockMvc.perform(builder).andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Value should be less than 99999999")));
+                .andExpect(content().string(containsString("Product Id should be less than 99999999")));
     }
 }

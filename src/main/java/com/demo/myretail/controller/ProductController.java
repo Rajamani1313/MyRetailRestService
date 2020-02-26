@@ -1,6 +1,5 @@
 package com.demo.myretail.controller;
 
-import com.demo.myretail.Exception.ProductAlreadyExistException;
 import com.demo.myretail.model.Product;
 import com.demo.myretail.model.ProductMessage;
 import com.demo.myretail.service.ProductService;
@@ -9,17 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Controller for Product API
@@ -72,7 +63,7 @@ public class ProductController {
      * @return Response Object
      */
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updatePriceDetails(@PathVariable String id, @RequestBody Product product) {
+    public ResponseEntity updatePriceDetails(@PathVariable String id, @RequestBody @Valid Product product) {
 
         /**
          * Validate Product Id to be numeric
@@ -94,25 +85,13 @@ public class ProductController {
         }
 
         /**
-         * Validate Request Body Json for Constraints
-         */
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        Set<ConstraintViolation<Object>> errorList = validator.validate(product);
-        if (!errorList.isEmpty()) {
-            List message = new ArrayList();
-            for (ConstraintViolation error : errorList)
-                message.add(error.getPropertyPath().toString() + ":" + error.getMessage());
-            log.info(ProductMessage.ERR105 + Arrays.toString(message.toArray()));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ProductMessage.ERR105 + "\n" + Arrays.toString(message.toArray()));
-        }
-        /**
          * Insert Product Price details to persistent storage
          */
         try {
             productService.saveProductDetails(product);
         } catch (Exception e) {
             log.info(e.getMessage() + id);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage() + id);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
         log.info("Insert Function Success: " + ProductMessage.MSG100 + id);
         return ResponseEntity.status(HttpStatus.CREATED).body(ProductMessage.MSG100 + id);

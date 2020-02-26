@@ -6,7 +6,6 @@ import com.demo.myretail.Exception.ProductPriceNotFoundException;
 import com.demo.myretail.dto.ProductPrice;
 import com.demo.myretail.model.CurrentPrice;
 import com.demo.myretail.model.Product;
-import com.demo.myretail.model.ProductMessage;
 import com.demo.myretail.repository.ProductRepository;
 import com.jayway.jsonpath.JsonPath;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +40,7 @@ public class ProductService {
         ProductPrice productPrice = productRepository.findByProductId(id);
         if (productPrice == null) {
             log.info("Product not found in DB");
-            throw new ProductPriceNotFoundException(ProductMessage.ERR100);
+            throw new ProductPriceNotFoundException(String.valueOf(id));
         }
         log.debug("Price Details fetched from DB successfully" + productPrice.toString());
         Product product = new Product();
@@ -75,7 +74,7 @@ public class ProductService {
             log.debug("Description fetched succesfully:" + description);
         } catch (Exception e) {
             log.error("Exception:" + e.getMessage());
-            throw new ProductDescriptionNotFoundException(ProductMessage.ERR101);
+            throw new ProductDescriptionNotFoundException(String.valueOf(id));
         }
         return description;
     }
@@ -96,7 +95,7 @@ public class ProductService {
             productRepository.save(productPrice);
         } catch (Exception e) {
             log.error("Exception: " + e.getMessage());
-            throw new ProductAlreadyExistException(ProductMessage.ERR104);
+            throw new ProductAlreadyExistException(String.valueOf(product.getId()));
         }
     }
 }
