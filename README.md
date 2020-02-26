@@ -20,7 +20,7 @@ We can run the application by downloading into local and run the below command. 
 * http://localhost:8080/v1/products/{id} -> Get : To get the product details based on product Id
 * http://localhost:8080/v1/products/{id} -> Put: To update price of the product
 
-####
+#### CURL
 * curl http://localhost:8080/v1/products/13860427
 * curl -X PUT -H "Content-Type: application/json" -d '{"id":13860499,"name":"Conan the Barbarian (dvd_video)","current_price":{"value":0.01,"currency_code":"USD"}}' http://localhost:8080/v1/products/13860499
 

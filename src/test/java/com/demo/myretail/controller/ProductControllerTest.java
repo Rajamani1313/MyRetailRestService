@@ -1,4 +1,4 @@
-package com.demo.myretail;
+package com.demo.myretail.controller;
 
 import com.demo.myretail.Exception.ProductPriceNotFoundException;
 import com.demo.myretail.model.CurrentPrice;
@@ -25,17 +25,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class ProductControllerTest {
 
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    ProductRepository productRepository;
+
+    /**
+     * product Id Values for Testing
+     */
     long tempId = 99999999;
     long getId = 13860427;
     long smallId = 1386042;
     long largeId = 1386042999;
     long zero = 0;
     String stringId = "abcdef";
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    ProductRepository productRepository;
 
     Product product = new Product();
     CurrentPrice currentPrice = new CurrentPrice();
@@ -43,7 +47,11 @@ public class ProductControllerTest {
     String json;
     MockHttpServletRequestBuilder builder;
 
-
+    /**
+     * Setup for adding new Put Request
+     * @param product
+     * @return
+     */
     public Product setup(Product product) {
         product.setName("test");
         currentPrice.setValue(1.99);

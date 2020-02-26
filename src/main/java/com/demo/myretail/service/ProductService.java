@@ -61,7 +61,7 @@ public class ProductService {
      * @param id
      * @return Product Name
      */
-    private String fetchProductName(Long id) throws ProductAlreadyExistException {
+    public String fetchProductName(Long id) throws ProductAlreadyExistException {
         log.debug("Inside Fetch Product Name");
         log.debug("Product Id : " + id);
         RestTemplate restTemplate = new RestTemplate();
