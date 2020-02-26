@@ -115,7 +115,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void add_product_existing_id_should_return_conflict() throws Exception {
+    private void add_product_existing_id_should_return_conflict() throws Exception {
         product.setId(getId);
         product = setup(product);
         json = obj.writeValueAsString(product);

@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService{
      * @param id
      * @return Product
      */
-    public Product fetchProductDetails(Long id) throws ProductAlreadyExistException {
+    public Product fetchProductDetails(Long id) {
         log.debug("Inside Fetch Product Details");
         log.debug("Product Id : " + id);
         ProductPrice productPrice = productRepository.findByProductId(id);
@@ -60,7 +60,7 @@ public class ProductServiceImpl implements ProductService{
      * @param id
      * @return Product Name
      */
-    public String fetchProductName(Long id) throws ProductAlreadyExistException {
+    public String fetchProductName(Long id)  {
         log.debug("Inside Fetch Product Name");
         log.debug("Product Id : " + id);
         RestTemplate restTemplate = new RestTemplate();
@@ -84,7 +84,7 @@ public class ProductServiceImpl implements ProductService{
      *
      * @param product
      */
-    public void saveProductDetails(Product product) throws ProductAlreadyExistException {
+    public void saveProductDetails(Product product)  {
         log.debug("Inside Save Product Details");
         log.debug("Product: " + product.toString());
         ProductPrice productPrice = new ProductPrice();
