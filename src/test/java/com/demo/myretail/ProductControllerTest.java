@@ -1,5 +1,6 @@
 package com.demo.myretail;
 
+import com.demo.myretail.Exception.ProductPriceNotFoundException;
 import com.demo.myretail.model.CurrentPrice;
 import com.demo.myretail.model.Product;
 import com.demo.myretail.repository.ProductRepository;
@@ -92,7 +93,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void test_get_product_details_large_id_should_return_not_found() throws Exception {
+    public void test_get_product_details_large_id_should_return_not_found() throws ProductPriceNotFoundException,Exception {
         mockMvc.perform(get("/v1/products/{id}", largeId))
                 .andDo(print())
                 .andExpect(status().isNotFound())

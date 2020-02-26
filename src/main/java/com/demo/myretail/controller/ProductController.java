@@ -1,6 +1,6 @@
 package com.demo.myretail.controller;
 
-import com.demo.myretail.Exception.ProductException;
+import com.demo.myretail.Exception.ProductAlreadyExistException;
 import com.demo.myretail.model.Product;
 import com.demo.myretail.model.ProductMessage;
 import com.demo.myretail.service.ProductService;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolation;
@@ -45,7 +46,7 @@ public class ProductController {
         Long productId = null;
         try {
             productId = Long.parseLong(id);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             log.info(ProductMessage.ERR102 + " - " + id);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ProductMessage.ERR102);
         }
@@ -55,7 +56,7 @@ public class ProductController {
         Product product = null;
         try {
             product = productService.fetchProductDetails(productId);
-        } catch (ProductException e) {
+        } catch (Exception e) {
             log.info(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -79,7 +80,7 @@ public class ProductController {
         Long productId = null;
         try {
             productId = Long.parseLong(id);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             log.info(ProductMessage.ERR102 + " - " + id);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ProductMessage.ERR102);
         }
@@ -104,13 +105,12 @@ public class ProductController {
             log.info(ProductMessage.ERR105 + Arrays.toString(message.toArray()));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ProductMessage.ERR105 + "\n" + Arrays.toString(message.toArray()));
         }
-
         /**
          * Insert Product Price details to persistent storage
          */
         try {
             productService.saveProductDetails(product);
-        } catch (ProductException e) {
+        } catch (Exception e) {
             log.info(e.getMessage() + id);
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage() + id);
         }

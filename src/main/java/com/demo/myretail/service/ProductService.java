@@ -1,6 +1,8 @@
 package com.demo.myretail.service;
 
-import com.demo.myretail.Exception.ProductException;
+import com.demo.myretail.Exception.ProductAlreadyExistException;
+import com.demo.myretail.Exception.ProductDescriptionNotFoundException;
+import com.demo.myretail.Exception.ProductPriceNotFoundException;
 import com.demo.myretail.dto.ProductPrice;
 import com.demo.myretail.model.CurrentPrice;
 import com.demo.myretail.model.Product;
@@ -33,13 +35,13 @@ public class ProductService {
      * @param id
      * @return Product
      */
-    public Product fetchProductDetails(Long id) throws ProductException {
+    public Product fetchProductDetails(Long id) throws ProductAlreadyExistException {
         log.debug("Inside Fetch Product Details");
         log.debug("Product Id : " + id);
         ProductPrice productPrice = productRepository.findByProductId(id);
         if (productPrice == null) {
             log.info("Product not found in DB");
-            throw new ProductException(ProductMessage.ERR100);
+            throw new ProductPriceNotFoundException(ProductMessage.ERR100);
         }
         log.debug("Price Details fetched from DB successfully" + productPrice.toString());
         Product product = new Product();
@@ -59,7 +61,7 @@ public class ProductService {
      * @param id
      * @return Product Name
      */
-    private String fetchProductName(Long id) throws ProductException {
+    private String fetchProductName(Long id) throws ProductAlreadyExistException {
         log.debug("Inside Fetch Product Name");
         log.debug("Product Id : " + id);
         RestTemplate restTemplate = new RestTemplate();
@@ -73,7 +75,7 @@ public class ProductService {
             log.debug("Description fetched succesfully:" + description);
         } catch (Exception e) {
             log.error("Exception:" + e.getMessage());
-            throw new ProductException(ProductMessage.ERR101);
+            throw new ProductDescriptionNotFoundException(ProductMessage.ERR101);
         }
         return description;
     }
@@ -83,7 +85,7 @@ public class ProductService {
      *
      * @param product
      */
-    public void saveProductDetails(Product product) throws ProductException {
+    public void saveProductDetails(Product product) throws ProductAlreadyExistException {
         log.debug("Inside Save Product Details");
         log.debug("Product: " + product.toString());
         ProductPrice productPrice = new ProductPrice();
@@ -94,7 +96,7 @@ public class ProductService {
             productRepository.save(productPrice);
         } catch (Exception e) {
             log.error("Exception: " + e.getMessage());
-            throw new ProductException(ProductMessage.ERR104);
+            throw new ProductAlreadyExistException(ProductMessage.ERR104);
         }
     }
 }
