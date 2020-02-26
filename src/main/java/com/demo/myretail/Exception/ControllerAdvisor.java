@@ -38,6 +38,16 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(ProductIdValidationException.class)
+    public ResponseEntity<Object> handleProductIdValidationException(
+            Exception ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler({ProductAlreadyExistException.class,ProductIdNotMatchingException.class})
     public ResponseEntity<Object> handleProductAlreadyExistException(

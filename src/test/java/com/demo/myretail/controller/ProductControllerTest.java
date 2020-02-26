@@ -80,23 +80,23 @@ public class ProductControllerTest {
         mockMvc.perform(get("/v1/products/{id}", stringId))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Product ID should be numeric")));
+                .andExpect(content().string(containsString("Product Id should be in 8 digits.")));
     }
 
     @Test
     public void test_get_product_details_small_id_should_return_not_found() throws Exception {
         mockMvc.perform(get("/v1/products/{id}", smallId))
                 .andDo(print())
-                .andExpect(status().isNotFound())
-                .andExpect(content().string(containsString("Product Price not available")));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Product Id should be in 8 digits.")));
     }
 
     @Test
     public void test_get_product_details_large_id_should_return_not_found() throws ProductPriceNotFoundException,Exception {
         mockMvc.perform(get("/v1/products/{id}", largeId))
                 .andDo(print())
-                .andExpect(status().isNotFound())
-                .andExpect(content().string(containsString("Product Price not available")));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Product Id should be in 8 digits.")));
     }
 
     @Test
@@ -138,7 +138,7 @@ public class ProductControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(json);
-        this.mockMvc.perform(builder).andExpect(status().isBadRequest())
+        this.mockMvc.perform(builder).andExpect(status().isConflict())
                 .andExpect(content().string(containsString("Product Id in the body is not matching.")));
     }
 
@@ -153,7 +153,7 @@ public class ProductControllerTest {
                 .characterEncoding("UTF-8")
                 .content(json);
         this.mockMvc.perform(builder).andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Invalid Product Id. Product ID should be numeric")));
+                .andExpect(content().string(containsString("Product Id should be in 8 digits.")));
     }
 
     @Test
