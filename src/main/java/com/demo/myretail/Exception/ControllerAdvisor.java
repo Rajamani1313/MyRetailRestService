@@ -8,7 +8,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDate;
@@ -38,7 +37,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
-    @ExceptionHandler(ProductIdValidationException.class)
+    @ExceptionHandler(  ProductIdValidationException.class)
     public ResponseEntity<Object> handleProductIdValidationException(
             Exception ex, WebRequest request) {
 
@@ -59,6 +58,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
