@@ -11,7 +11,7 @@
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
-                <SizeBasedTriggeringPolicy size="1000 KB" />
+                <SizeBasedTriggeringPolicy size="100 MB" />
 
             </Policies>
         </RollingFile>
@@ -24,7 +24,7 @@
         <Logger name="com.demo.myretail" level="debug" additivity="true">
             <appender-ref ref="fileLogger" level="debug" />
         </Logger>
-        <Root level="debug" additivity="false">
+        <Root level="info" additivity="false">
             <appender-ref ref="console" />
         </Root>
     </Loggers>

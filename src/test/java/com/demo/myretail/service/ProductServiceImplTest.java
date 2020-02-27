@@ -1,8 +1,7 @@
 package com.demo.myretail.service;
 
-import com.demo.myretail.Exception.ProductAlreadyExistException;
-import com.demo.myretail.Exception.ProductDescriptionNotFoundException;
-import com.demo.myretail.Exception.ProductPriceNotFoundException;
+import com.demo.myretail.exception.ProductDescriptionNotFoundException;
+import com.demo.myretail.exception.ProductPriceNotFoundException;
 import com.demo.myretail.dto.ProductPrice;
 import com.demo.myretail.model.CurrentPrice;
 import com.demo.myretail.model.Product;
@@ -21,6 +20,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+/**
+ * Test for Service Class
+ */
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ProductServiceImplTest {

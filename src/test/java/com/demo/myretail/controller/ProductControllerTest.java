@@ -1,6 +1,6 @@
 package com.demo.myretail.controller;
 
-import com.demo.myretail.Exception.ProductPriceNotFoundException;
+import com.demo.myretail.exception.ProductPriceNotFoundException;
 import com.demo.myretail.model.CurrentPrice;
 import com.demo.myretail.model.Product;
 import com.demo.myretail.repository.ProductRepository;
@@ -20,6 +20,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Test for Product Controller
+ */
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc

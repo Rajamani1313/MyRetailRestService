@@ -1,8 +1,8 @@
 package com.demo.myretail.service;
 
-import com.demo.myretail.Exception.ProductAlreadyExistException;
-import com.demo.myretail.Exception.ProductDescriptionNotFoundException;
-import com.demo.myretail.Exception.ProductPriceNotFoundException;
+import com.demo.myretail.exception.ProductAlreadyExistException;
+import com.demo.myretail.exception.ProductDescriptionNotFoundException;
+import com.demo.myretail.exception.ProductPriceNotFoundException;
 import com.demo.myretail.dto.ProductPrice;
 import com.demo.myretail.model.CurrentPrice;
 import com.demo.myretail.model.Product;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Service Class to execute functionality for Products
+ * Implementaion of Service Class to execute functionality for Products
  */
 @Service
 @Slf4j
@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService{
             description = JsonPath.parse(responseEntity.getBody()).read("$.product.item.product_description.title").toString();
             log.debug("Description fetched succesfully:" + description);
         } catch (Exception e) {
-            log.error("Exception:" + e.getMessage());
+            log.error("exception:" + e.getMessage());
             throw new ProductDescriptionNotFoundException(String.valueOf(id));
         }
         return description;
@@ -94,7 +94,7 @@ public class ProductServiceImpl implements ProductService{
         try {
             productRepository.save(productPrice);
         } catch (Exception e) {
-            log.error("Exception: " + e.getMessage());
+            log.error("exception: " + e.getMessage());
             throw new ProductAlreadyExistException(String.valueOf(product.getId()));
         }
     }

@@ -1,22 +1,11 @@
 package com.demo.myretail.service;
 
-import com.demo.myretail.Exception.ProductAlreadyExistException;
-import com.demo.myretail.Exception.ProductDescriptionNotFoundException;
-import com.demo.myretail.Exception.ProductPriceNotFoundException;
-import com.demo.myretail.dto.ProductPrice;
-import com.demo.myretail.model.CurrentPrice;
+import com.demo.myretail.exception.ProductAlreadyExistException;
 import com.demo.myretail.model.Product;
-import com.demo.myretail.repository.ProductRepository;
-import com.jayway.jsonpath.JsonPath;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 /**
- * Service Class to execute functionality for Products
+ * Service Interface to execute functionality for Products
  */
 @Service
 public interface ProductService {

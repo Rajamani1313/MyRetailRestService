@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/v1/home")
 public class HomeController {
+
     @Autowired
     private ProductService productService;
-
-
+    
     @GetMapping("")
     public String home(){
         return "<h1 style=\"color:Tomato;\">Welcome to Product API<h1>";

@@ -1,4 +1,4 @@
-package com.demo.myretail.Exception;
+package com.demo.myretail.exception;
 
 
 import org.springframework.http.HttpHeaders;
@@ -16,6 +16,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+/**
+ * Exception handler controller
+ */
 
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {

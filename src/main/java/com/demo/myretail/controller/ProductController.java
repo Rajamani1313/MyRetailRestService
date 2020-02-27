@@ -1,8 +1,7 @@
 package com.demo.myretail.controller;
 
-import com.demo.myretail.Exception.ProductIdNotMatchingException;
-import com.demo.myretail.Exception.ProductIdValidationException;
-import com.demo.myretail.Exception.ProductPriceNotFoundException;
+import com.demo.myretail.exception.ProductIdNotMatchingException;
+import com.demo.myretail.exception.ProductIdValidationException;
 import com.demo.myretail.model.Product;
 import com.demo.myretail.model.ProductMessage;
 import com.demo.myretail.service.ProductService;

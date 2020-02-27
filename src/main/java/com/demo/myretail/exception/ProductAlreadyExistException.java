@@ -1,6 +1,10 @@
-package com.demo.myretail.Exception;
+package com.demo.myretail.exception;
 
 import com.demo.myretail.model.ProductMessage;
+
+/**
+ * Product Already found in Persistence
+ */
 
 public class ProductAlreadyExistException extends RuntimeException {
     public ProductAlreadyExistException(String id){

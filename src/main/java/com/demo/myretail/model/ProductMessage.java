@@ -1,5 +1,8 @@
 package com.demo.myretail.model;
 
+/**
+ * Message Constants
+ */
 public class ProductMessage {
     public static final String ERR100 = "ERR-100 - Product Price not available for Product Id: ";
     public static final String ERR101 = "ERR-101 - Product Description not available for Product Id: ";
